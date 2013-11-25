@@ -5,7 +5,6 @@ function ValidatorError (rule, value, error) {
   this.message = error 
     ? error.message || error.toString()
     : ''
-
   this.error = error
   this.value = value
   if (error && error.stack) {
@@ -30,5 +29,5 @@ ValidatorError.prototype = Object.create(Error.prototype, {
 })
 
 ValidatorError.prototype.toString = function () {
-  return this.message ? '[' + this.rule + ']' : '[' + this.rule + ': ' + this.message + ']'
+  return !this.message ? '[' + this.rule + ']' : '[' + this.rule + ': ' + this.message + ']'
 }

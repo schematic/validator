@@ -26,7 +26,7 @@ exports.prototype.add = function (rule, value, error) {
 exports.prototype.toString = function() {
   return this.errors.length 
     ?  '[ Validation Error: \n' + this.errors.map(function(error){
-        return ['   ' , error.rule , ': ', error.message].join('')
+        return ['   ' , error.toString()].join('')
       }).join('\n') + '   ]'
     : '[ Validation Error ]'
 }
