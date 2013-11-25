@@ -1,4 +1,4 @@
-
+![validator](http://i.imgur.com/5h5Oxqj.png?1)
 # validator
 
   Validates schemas with support for async callbacks, promises, and thunks
