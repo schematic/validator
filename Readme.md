@@ -47,6 +47,12 @@ v.rule('min', function (value, min_value) {
     }
 })
 ```
+#### String Functions (via `component/to-function`)
+```javascript
+v.rule('can drink', 'age >= 21')
+.enable('can drink')
+.validate({age: 18}, callback)
+```
 
 ### #.validate(value, [settings, context,] callback)
 Validates a `value` with the rules/settings from `settings`. 
