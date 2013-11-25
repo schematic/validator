@@ -10,44 +10,53 @@
 
     $ component install ilsken/validator
 
-## Example
+## API
+
+### Validator([validators])
+Creates a new validator, you may optionally pass an object with names/rules
+
+### #.rule(name, fn)
+Adds a new rule and returns itself for chaining. There are 4 main types of rules
+#### Plain Function
 ```javascript
-var validator = require('validator')
-var v = new validator({
-	enum: function(value, values) {
-		if (values.indexOf(value) == -1)
-			throw new TypeError('must be one of the enum values: ' + values.join(','))
-	}, 
-	exampleAsync: function (value, options, next) {
-		setTimeout(function(){
-			next(new Error('failed after timeout'))
-		}, 400)
-	}
+v.rule('min', function(value, min_value) {
+  if (min_value !=== false && value < min_value) throw new TypeError('must be greater than ' + min_value)
 })
-
-// only runs the enum validator
-v.validate({
-	enum: ['foo', 'bar']
-},'baz', function(errors, valid) {
-	console.log('result: ', err, valid) // errors.enum == 'must be one of the enum values: foo, bar'
-})
-
-// async callbacks
-v.validate({
-	exampleAsync: true
-},'baz', function(errors, valid) {
-	console.log('result after timeout: ', valid)
-})
-
-// fail after the first error
-// only runs the enum validator
-v.validate({
-	enum: ['foo', 'bar'],
-	somethingAsync: true
-},'baz', true, function(errors, valid) {
-	console.log('result: ', err, valid)
+.validate(18, {min: 21}, function(errors) {
+  console.log(errors[0].message) // `min`: must be greater than 21
 })
 ```
+#### Async Functions
+```javascript
+v.rule('min', function(value, min_value, next) {
+  // call next(error) to report an error, next() if the value is valid
+})
+```
+#### Promises
+```javascript
+v.rule('min', function (value, min_value) {
+  return functionThatReturnsAPromise(value, min_value)
+})
+```
+
+#### Thunks
+```javascript
+v.rule('min', function (value, min_value) {
+    return function (next) {
+      next(new Error('something went wrong'))
+    }
+})
+```
+
+### #.validate(value, [settings, context,] callback)
+Validates a `value` with the rules/settings from `settings`. 
+You may optionally supply a `context` object which will be used to call the rule functions (`rule.call(context, value, settings[rule_name], next)`)
+If you don't pass a settings object it'll use the settings set via [Configurable](http://github.com/visionmedia/configurable.js) methods such as `set`, `enable`, or `disable`
+
+### Configurable Methods
+You can enable rules and set their configuration values the methods defined by `visionmedia/configurable.js`.
+
+By default validator will execute all the rules you've chosen settings for even if they throw errors (so you can get the full list of errors). If you wish to fail on the first validation error you can use `v.enable('strict')`
 
 Async validator function must either take 3 arguments (`value, options, next`), return a promise, or return a thunk
 
