@@ -4,11 +4,16 @@
   "description": "Validates schemas",
   "version": "0.0.1",
   "keywords": [],
-  "dependencies": {},
+  "dependencies": {
+    "timoxley/next-tick": "*",
+    "component/to-function": "*",
+    "visionmedia/configurable.js": "*"
+  },
   "development": {},
   "license": "MIT",
   "main": "index.js",
   "scripts": [
     "index.js"
-  ]
+  ],
+  "remotes": []
 }

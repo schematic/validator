@@ -4,7 +4,9 @@
   "description": "Validates schemas with support for async callbacks, promises, and thunks   This project is still in it's infancy, documentation and a stable API coming soon",
   "main": "index.js",
   "dependencies": {
-    "each-component": "~0.0.1"
+    "next-tick": "git://github.com/timoxley/next-tick#0.0.2",
+    "to-function": "~1.2.0",
+    "configurable": "0.0.1"
   },
   "devDependencies": {},
   "scripts": {
