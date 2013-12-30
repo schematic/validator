@@ -6,8 +6,8 @@ var ValidationError = require('./errors/validation')
   , exports = module.exports = Validator
 
 function Validator(rules) {
-  this.rules(rules)
   this._rules = {}
+  this.rules(rules)
   this.disable('strict')
 }
 
