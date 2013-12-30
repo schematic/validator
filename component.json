@@ -13,7 +13,9 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": [
-    "index.js"
+    "index.js",
+    "errors/validation.js",
+    "errors/validator.js"
   ],
   "remotes": []
 }
