@@ -1,6 +1,6 @@
 {
   "name": "validator-schematic",
-  "version": "0.0.1",
+  "version": "0.2.1",
   "description": "Validates schemas with support for async callbacks, promises, and thunks   This project is still in it's infancy, documentation and a stable API coming soon",
   "main": "index.js",
   "dependencies": {
