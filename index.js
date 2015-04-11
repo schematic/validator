@@ -2,7 +2,7 @@
 var ValidationError = require('./errors/validation')
   , compile = require('to-function')
   , Configurable = safe_require('configurable', 'configurable.js')
-  , nextTick = require('next-tick')
+  , asap = require('asap')
   , exports = module.exports = Validator
 
 function Validator(rules) {
@@ -45,7 +45,7 @@ exports.prototype.validate = function(value, settings, context, callback) {
     , strict = this.enabled('strict')
   settings = settings || this.settings
 
-  nextTick(function (){
+  setImmediate(function (){
     validate(value, rules, settings, strict,context, callback)
   })
 }
