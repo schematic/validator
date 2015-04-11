@@ -1,7 +1,7 @@
 /* jshint evil: false */
 var ValidationError = require('./errors/validation')
   , compile = require('to-function')
-  , Configurable = safe_require('configurable', 'configurable.js')
+  , Configurable = require('configurable')
   , asap = require('asap')
   , exports = module.exports = Validator
 
@@ -45,7 +45,7 @@ exports.prototype.validate = function(value, settings, context, callback) {
     , strict = this.enabled('strict')
   settings = settings || this.settings
 
-  setImmediate(function (){
+  asap(function (){
     validate(value, rules, settings, strict,context, callback)
   })
 }
@@ -119,12 +119,4 @@ function execute(context, rule, value, settings, next) {
 
  function wrap(str) {
   return (new Function('str', 'fn', 'return function(value, enabled) { if(enabled === true && !fn(value)) throw new Error("failed: " + str) }'))(str, compile(str))
-}
-
-function safe_require(node, component) {
-  try {
-    return require(node)
-  } catch (error) {
-    return require(component)
-  }
 }
