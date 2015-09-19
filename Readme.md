@@ -1,70 +1,69 @@
-![validator](http://i.imgur.com/5h5Oxqj.png?1)
+![validator](http://i.imgur.com/YTyduvl.png)
 # validator
 
-  Validates schemas with support for async callbacks, promises, and thunks
-  This project is still in it's infancy, documentation and a stable API coming soon
+  A simple asynchronous validator written for the next generation of javascript.  
 
 ## Installation
 
-  Install with [component(1)](http://component.io):
+  Install with [npm(1)](http://npmjs.org):
 
-    $ component install ilsken/validator
+    $ npm install schematic/validator
+
+  To keep things lighter for people using browserify and the like, validator is compiled with babel using `externalHelpers: true`. So make sure in your top-level application that you `npm install babel-core` and `require('babel-core/externalHelpers')`
 
 ## API
 
-### Validator([validators])
-Creates a new validator, you may optionally pass an object with names/rules
+### Validator([RuleFunction])
+Creates a new validator, you may optionally pass an object with names/rules. Rule functions will be called with `fn(value, settings)`
 
-### #.rule(name, fn)
-Adds a new rule and returns itself for chaining. There are 4 main types of rules
-#### Plain Function
+### #.rule(name, fn, enable = true) : Validator
+Adds a new rule and returns itself for chaining. There are 2 types of rules. If you pass `enable=false`, this rule won't run when you call `#.validate` until you call `#.enable(name)`
+
+#### Assert Rule
 ```javascript
 v.rule('min', function(value, min_value) {
   if (min_value !=== false && value < min_value) throw new TypeError('must be greater than ' + min_value)
 })
-.validate(18, {min: 21}, function(errors) {
-  console.log(errors[0].message) // `min`: must be greater than 21
-})
 ```
-#### Async Functions
-```javascript
-v.rule('min', function(value, min_value, next) {
-  // call next(error) to report an error, next() if the value is valid
-})
-```
-#### Promises
+#### Promise Rule
 ```javascript
 v.rule('min', function (value, min_value) {
   return functionThatReturnsAPromise(value, min_value)
 })
 ```
 
-#### Thunks
+### #.rules(ruleMap, enable = true) : Validator
+Each name/function pair in the `ruleMap` will be added to the validator as if called with `#.rule(key, value, enable)`. Returns self for chaining
+
+### #.validate<T>(value: T, context: ?any) : Promise<T>
+Validates a `value` with the all enabled rules.
+You may optionally supply a `context` object which will be used to call the rule functions (`rule.call(context, value, settings[rule_name])`). You can use the `#set` method to control the settings for each rule.
+
+Returns a Promise that either resolves to `value` or rejects with a `ValidationError` containing a list of all `ValidatorError`'s that occurred. You can access them via the `errors` property.
+
 ```javascript
-v.rule('min', function (value, min_value) {
-    return function (next) {
-      next(new Error('something went wrong'))
-    }
-})
-```
-#### String Functions (via `component/to-function`)
-```javascript
-v.rule('can drink', 'age >= 21')
-.enable('can drink')
-.validate({age: 18}, callback)
+v.validate(user)
+ .then(saveToDatabase)
+ .catch(function (e) {
+   console.log(e.errors.length, ' errors occurred');
+   console.log(e.toString());
+ })
 ```
 
-### #.validate(value, [settings, context,] callback)
-Validates a `value` with the rules/settings from `settings`. 
-You may optionally supply a `context` object which will be used to call the rule functions (`rule.call(context, value, settings[rule_name], next)`)
-If you don't pass a settings object it'll use the settings set via [Configurable](http://github.com/visionmedia/configurable.js) methods such as `set`, `enable`, or `disable`
+### #.set(ruleName: string, settingValue: any): Validator
+Set the value passed to the rule specified by `ruleName` when the validator runs. Returns self for chaining.
 
-### Configurable Methods
-You can enable rules and set their configuration values the methods defined by `visionmedia/configurable.js`.
+### #.get(ruleName: string): Validator
+Gets the settings for `ruleName`
 
-By default validator will execute all the rules you've chosen settings for even if they throw errors (so you can get the full list of errors). If you wish to fail on the first validation error you can use `v.enable('strict')`
+### #.enable/disable(ruleName: string) : Validator
+Enables or disables `ruleName`
 
-Async validator function must either take 3 arguments (`value, options, next`), return a promise, or return a thunk
+### #.enabled/disabled(ruleName: string) : boolean
+Returns whether or not `ruleName` is enabled or disabled respectively
+
+### #.toggle(ruleName: string) : boolean
+Toggles whether or not `ruleName` is enabled
 
 
 ## License
