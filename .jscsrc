@@ -1,0 +1,12 @@
+{
+	"preset": "node-style-guide",
+	"requireCamelCaseOrUpperCaseIdentifiers": false,
+	"requireCurlyBraces": false,
+	"requireCapitalizedComments": null,
+	"disallowSpacesInFunction": null,
+  "requireTrailingComma": false,
+  "disallowQuotedKeysInObjects": "allButReserved",
+  "maximumLineLength": null,
+	"validateQuoteMarks": false,
+	"esnext": true
+}

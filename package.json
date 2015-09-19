@@ -2,15 +2,18 @@
   "name": "validator-schematic",
   "version": "0.2.2",
   "description": "Validates schemas with support for async callbacks, promises, and thunks   This project is still in it's infancy, documentation and a stable API coming soon",
-  "main": "index.js",
+  "main": "build/index.js",
   "dependencies": {
-    "asap": "^2.0.1",
-    "configurable": "^0.0.1",
-    "to-function": "^2.0.6"
+    "bluebird": "^2.10.0"
   },
-  "devDependencies": {},
+
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "mocha": "^2.3.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel/register",
+    "build": "babel -d build ./src"
   },
   "repository": {
     "type": "git",
