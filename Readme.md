@@ -9,7 +9,7 @@
 
     $ npm install schematic/validator
 
-  To keep things lighter for people using browserify and the like, validator is compiled with babel using `externalHelpers: true`. So make sure in your top-level application that you `npm install babel-core` and `require('babel-core/externalHelpers')`
+  To keep things lighter for people using browserify and the like, validator is compiled with babel using `externalHelpers: true`. So make sure in your top-level application that you `npm install babel-core` and `require('babel-core/external-helpers')`
 
 ## API
 
