@@ -1,4 +1,5 @@
 /* global it, describe, beforeEach */
+import 'babel-core/external-helpers';
 import {Validator, ValidationError, ValidatorError} from '../src/index.js';
 import Promise from 'bluebird';
 import assert from 'assert';
@@ -46,7 +47,6 @@ describe('Validator', function() {
          assert.strictEqual(error.errors.length, 2, 'should capture all ValidatorErrors');
          assert(error.errors[0] instanceof ValidatorError, 'should be a ValidatorError');
          assert(error.errors[0].error instanceof TypeError);
-         console.log(error.toString());
        }).then(next, next);
     })
   })
