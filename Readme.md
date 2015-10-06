@@ -6,9 +6,9 @@
 
 ## Installation
 
-  Install with [component(1)](http://component.io):
+  Install with [NPM](https://www.npmjs.com):
 
-    $ component install ilsken/validator
+    $ npm install ilsken/validator
 
 ## API
 
